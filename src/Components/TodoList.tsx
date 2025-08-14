@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { FaCheck } from 'react-icons/fa'
-import { useGetTodoQuery, useDeleteTodoMutation, useEditeTodoMutation, useAddTodoMutation } from '../Redux/Slices/TodoSlice'
-import type { todo } from '../models/todo.model'
+import { useGetTodoQuery, useDeleteTodoMutation, useEditeTodoMutation } from '../Redux/Slices/TodoSlice'
+
 
 const TodoList: React.FC = () => {
 
-    const { data: TODOS, isError, isLoading, isSuccess } = useGetTodoQuery()
+    const { data: TODOS, isError, isLoading } = useGetTodoQuery()
     const [deleteTodo] = useDeleteTodoMutation()
     const [editTodo] = useEditeTodoMutation()
-    const [addTodo] = useAddTodoMutation()
+
 
     function handleDone(id: string, isDone: boolean) {
         editTodo({
