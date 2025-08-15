@@ -4,7 +4,3 @@ export interface todo {
   isDone: boolean;
   isEdit: boolean;
 }
-export interface Completed {
-  id: string;
-  todo: string;
-}

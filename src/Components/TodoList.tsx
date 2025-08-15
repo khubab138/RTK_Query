@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { FaCheck } from 'react-icons/fa'
 import { useGetTodoQuery, useDeleteTodoMutation, useEditeTodoMutation } from '../Redux/Slices/TodoSlice'
-import type { Completed, todo } from '../models/todo.model'
+import type { todo } from '../models/todo.model'
 import { useAddCompleteTodosMutation } from '../Redux/Slices/CompleteTodos'
 
 
