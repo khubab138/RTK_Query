@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import { FaCheck } from 'react-icons/fa'
 import { useGetTodoQuery, useDeleteTodoMutation, useEditeTodoMutation } from '../Redux/Slices/TodoSlice'
+import type { Completed, todo } from '../models/todo.model'
+import { useAddCompleteTodosMutation } from '../Redux/Slices/CompleteTodos'
 
 
 const TodoList: React.FC = () => {
@@ -9,17 +11,12 @@ const TodoList: React.FC = () => {
     const { data: TODOS, isError, isLoading } = useGetTodoQuery()
     const [deleteTodo] = useDeleteTodoMutation()
     const [editTodo] = useEditeTodoMutation()
+    const [addComplete] = useAddCompleteTodosMutation()
 
 
-    function handleDone(id: string, isDone: boolean) {
-        editTodo({
-            id: id,
-            body: {
-                isDone: !isDone,
-
-
-            }
-        })
+    function handleDone(id: string, todo: todo) {
+        addComplete(todo)
+        deleteTodo(id)
     }
 
     function handleEdite(id: string, isEdit: boolean) {
@@ -42,10 +39,22 @@ const TodoList: React.FC = () => {
         })
     }
 
+    function handleDragStart({ e, todo }: { e: React.DragEvent<HTMLDivElement>, todo: todo }) {
+        e.currentTarget.style.opacity = "0.5"
+        console.log(todo)
+
+    }
+    function handleDragEnd(e: React.DragEvent<HTMLDivElement>) {
+        e.currentTarget.style.opacity = '1'
+    }
+
 
 
     return (
-        <>       {isError && <h1>Somthing went Worng</h1>}
+
+        <>
+
+            {isError && <h1>Somthing went Worng</h1>}
             {isLoading && <h1>Loading...</h1>}
             {TODOS?.length === 0 && <h1 className='HEADING lg:text-3xl text-slate-800' >Add some todo's</h1>}
             {TODOS?.map((todo) =>
@@ -55,12 +64,12 @@ const TodoList: React.FC = () => {
                         key={todo.id}
                         className=" flex felx-col justify-evenly bg-slate-800 p-2 rounded-lg  m-1     "
                     >
-                        <div className='relative w-70'>
+                        <div className='relative '>
 
                             <input
 
                                 onChange={(e) => setNewTodo(e.target.value)}
-                                className=" w-55 px-1  truncate  rounded-lg bg-white text-slate-800  "
+                                className="  px-1  truncate  rounded-lg bg-white text-slate-800  "
                             />
                             <button
                                 onClick={() => handleEditeValue(todo.id, todo.isEdit)}
@@ -78,11 +87,14 @@ const TodoList: React.FC = () => {
 
 
                         <div
+                            draggable
+                            onDragStart={(e) => handleDragStart({ todo, e })}
+                            onDragEnd={handleDragEnd}
                             key={todo.id}
                             className={`flex felx-col justify-evenly  m-1 p-2  h-[13%] bg-slate-800 border-2 border-white/30 rounded-lg ${todo.isDone && 'opacity-50 cursor-not-allowed'} `}
                         >
 
-                            <h1 className={`w-50 ${todo.isDone && "line-through"}`}>{todo.todo}</h1>
+                            <h1 className={` ${todo.isDone && "line-through"}`}>{todo.todo}</h1>
                             <div className=" flex justify-evenly items-center gap-2 text-teal-400   ">
                                 <button disabled={todo.isDone}  >
                                     <MdEdit onClick={() => handleEdite(todo.id, todo.isEdit)} className={`text-2xl hover:text-blue-800 `} />
@@ -91,7 +103,7 @@ const TodoList: React.FC = () => {
                                     <MdDelete onClick={() => deleteTodo(todo.id)} className="text-2xl hover:text-red-800 " />
                                 </button>
                                 <button disabled={todo.isDone} >
-                                    <FaCheck onClick={() => handleDone(todo.id, todo.isDone)} className="text-2xl hover:text-green-800" />
+                                    <FaCheck onClick={() => handleDone(todo.id, todo)} className="text-2xl hover:text-green-800" />
                                 </button>
 
                             </div>

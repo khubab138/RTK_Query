@@ -4,17 +4,17 @@ import type { todo } from "../../models/todo.model";
 export const TodoAPI = createApi({
   reducerPath: "todos",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://688f92e2f21ab1769f899a85.mockapi.io",
+    baseUrl: "https://688f92e2f21ab1769f899a85.mockapi.io/",
   }),
   tagTypes: ["Todos"],
   endpoints: (builder) => ({
     getTodo: builder.query<todo[], void>({
-      query: () => "/TSC_Crud",
+      query: () => "/CRUD_Parent",
       providesTags: ["Todos"],
     }),
     addTodo: builder.mutation<todo, todo>({
       query: (todo) => ({
-        url: "/TSC_Crud",
+        url: "/CRUD_Parent",
         method: "POST",
         body: todo,
       }),
@@ -22,14 +22,14 @@ export const TodoAPI = createApi({
     }),
     deleteTodo: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/TSC_Crud/${id}`,
+        url: `/CRUD_Parent/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Todos"],
     }),
     editeTodo: builder.mutation<void, { id: string; body: Partial<todo> }>({
       query: ({ id, body }) => ({
-        url: `/TSC_Crud/${id}`,
+        url: `/CRUD_Parent/${id}`,
         method: "PUT",
         body,
       }),

@@ -1,13 +1,19 @@
 import React, { useState } from 'react'
 
 import TodoList from './TodoList'
+import Completed from './Completed'
+
 import { useAddTodoMutation } from '../Redux/Slices/TodoSlice'
+
 import type { todo } from '../models/todo.model'
 
 
 
 
+
 const InputSection: React.FC = () => {
+
+
 
     const [addTodo] = useAddTodoMutation()
     const [todo, settodo] = useState<string>('')
@@ -26,17 +32,16 @@ const InputSection: React.FC = () => {
         <div className=" grid place-content-center p-4  m-3  ">
 
             <div className="relative ">
-                <input
-                    className="h-20 text-lg border-white/30 text-white border-2 p-3 rounded-full hover:border-2 hover:border-slate-800"
-                    type="text"
+                <textarea
+                    className="h-20  lg:w-80 lg:pr-20  pr-10 resize-none overflow-hidden text-lg border-white/30 text-white border-2 p-5 rounded-full hover:border-2 hover:border-slate-800"
                     value={todo}
                     placeholder="Enter Todo..."
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => { settodo(e.target.value) }}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => { settodo(e.target.value) }}
                 />
                 <button
 
                     onClick={handleAdd}
-                    className="absolute right-3 text-xl  top-1/2 -translate-y-1/2 px-5 py-3 cursor-pointer bg-teal-400 text-slate-800 font-bold rounded-full hover:bg-transparent hover:border-2 hover:border-teal-400 hover:text-teal-400"
+                    className="absolute right-2 text-xl  top-1/2 -translate-y-1/2 px-5 py-3 cursor-pointer bg-teal-400 text-slate-800 font-bold rounded-full hover:bg-transparent hover:border-2 hover:border-teal-400 hover:text-teal-400"
                 >
                     +
                 </button>
@@ -52,7 +57,7 @@ const InputSection: React.FC = () => {
             <li className='col-span-1  border-1 rounded-lg p-2  border-white/30' >
                 <h1 className='HEADING lg:text-3xl text-slate-800' >Completed</h1>
                 <div className='flex flex-wrap justify-evenly items-start'>
-                    <TodoList />
+                    <Completed />
                 </div>
             </li>
 
